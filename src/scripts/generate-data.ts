@@ -32,7 +32,7 @@ function main() {
     const customerData = generateBulkCustomerData(20000);
 
     // 2. 샘플 데이터 미리보기
-    previewData(customerData);
+    // previewData(customerData);
 
     // 3. 통계 정보 출력
     const vipCount = customerData.filter((c) => c.isVip).length;
@@ -45,11 +45,11 @@ function main() {
 
     // 4. 파일로 저장
     saveCustomerData(customerData);
-    console.log("~~ TODO ~~");
-    console.log("\n🚀 다음 단계: BullMQ를 사용한 배치 암호화 처리");
-    console.log("   - 100개씩 200개 작업으로 분할");
-    console.log("   - CPU 사용률 50% 제한");
-    console.log("   - 암호화 대상: name, email, phone, ssn_last4, address");
+    // console.log("~~ TODO ~~");
+    // console.log("\n🚀 다음 단계: BullMQ를 사용한 배치 암호화 처리");
+    // console.log("   - 100개씩 200개 작업으로 분할");
+    // console.log("   - CPU 사용률 50% 제한");
+    // console.log("   - 암호화 대상: name, email, phone, ssn_last4, address");
   } catch (error) {
     console.error("❌ 데이터 생성 중 오류 발생:", error);
   }

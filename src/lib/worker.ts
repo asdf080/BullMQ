@@ -11,15 +11,13 @@ const connection = {
 const worker = new Worker(
   QUEUE_NAME,
   async (job) => {
-    console.log("🔧 작업 실행:", job.name, job.data);
-
     try {
       // job.data에서 고객 배열 가져오기
       const { customers, batchId } = job.data;
 
       console.log(`📦 배치 ${batchId} 암호화 시작: ${customers.length}명`);
 
-      // 실제 암호화 실행 (시뮬레이션 코드 대신)
+      // 실제 암호화 실행
       const encryptedCustomers = await encryptCustomerBatch(customers);
 
       // 성공한 고객 수 계산
