@@ -1,7 +1,7 @@
 import crypto from "crypto";
 
 // 환경변수에서 암호화 키 가져오기 (32바이트 = 256비트)
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || "your-32-character-secret-key!!!";
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || "your-32-character-secret-key!!!!";
 
 /**
  * 단일 필드 암호화
@@ -14,7 +14,7 @@ export function encryptField(plaintext: string): string {
     const iv = crypto.randomBytes(16);
 
     // AES-256-GCM 암호화 객체 생성
-    const cipher = crypto.createCipher("aes-256-gcm", ENCRYPTION_KEY);
+    const cipher = crypto.createCipheriv("aes-256-gcm", ENCRYPTION_KEY, iv);
     cipher.setAutoPadding(true);
 
     // 암호화 실행
@@ -50,7 +50,7 @@ export function decryptField(encryptedData: string): string {
     const authTag = Buffer.from(authTagHex, "hex");
 
     // AES-256-GCM 복호화 객체 생성
-    const decipher = crypto.createDecipher("aes-256-gcm", ENCRYPTION_KEY);
+    const decipher = crypto.createDecipheriv("aes-256-gcm", ENCRYPTION_KEY, iv);
     decipher.setAuthTag(authTag);
 
     // 복호화 실행
