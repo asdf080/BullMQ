@@ -1,20 +1,10 @@
+import { Customer } from "@/generated/prisma";
 import { faker } from "@faker-js/faker";
 import fs from "fs";
 import path from "path";
 
 // 고객 데이터 인터페이스
-export interface CustomerData {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  ssn_last4: string; // 주민번호 뒷자리
-  address: string;
-  birthDate: string;
-  joinDate: string;
-  accountBalance: number;
-  isVip: boolean;
-}
+export type CustomerData = Omit<Customer, "createdAt" | "updatedAt" | "encryptedAt">;
 
 // 한국 이름 생성을 위한 성씨와 이름 데이터
 const koreanLastNames = ["김", "이", "박", "최", "정", "강", "조", "윤", "장", "임", "한", "오", "서", "신", "권", "황", "안", "송", "류", "전"];
@@ -68,24 +58,19 @@ function generateCustomerData(id: number): CustomerData {
     name: isKorean ? generateKoreanName() : faker.person.fullName(),
     email: faker.internet.email(),
     phone: isKorean ? generateKoreanPhone() : faker.phone.number(),
-    ssn_last4: generateSSNLast4(),
+    ssnLast4: generateSSNLast4(),
     address: isKorean ? generateKoreanAddress() : faker.location.streetAddress(),
-    birthDate: faker.date
-      .between({
-        from: "1950-01-01",
-        to: "2005-12-31",
-      })
-      .toISOString()
-      .split("T")[0],
-    joinDate: faker.date
-      .between({
-        from: "2020-01-01",
-        to: "2024-12-31",
-      })
-      .toISOString()
-      .split("T")[0],
+    birthDate: faker.date.between({
+      from: "1950-01-01",
+      to: "2005-12-31",
+    }),
+    joinDate: faker.date.between({
+      from: "2020-01-01",
+      to: "2024-12-31",
+    }),
     accountBalance: Math.floor(Math.random() * 10000000), // 0 ~ 1000만원
     isVip: Math.random() > 0.85, // 15% VIP 고객
+    encrypted: false,
   };
 }
 
@@ -111,15 +96,4 @@ function generateBulkCustomerData(count: number = 20000): CustomerData[] {
   return customers;
 }
 
-// 데이터를 파일로 저장
-function saveCustomerData(customers: CustomerData[], filename: string = "customer_data.json"): void {
-  console.log(`💾 데이터를 ${filename}에 저장 중...`);
-
-  const outputPath = path.join(process.cwd(), filename);
-  fs.writeFileSync(outputPath, JSON.stringify(customers, null, 2));
-
-  console.log(`✅ ${customers.length}개 고객 데이터가 ${outputPath}에 저장되었습니다.`);
-  console.log(`📋 파일 크기: ${(fs.statSync(outputPath).size / 1024 / 1024).toFixed(2)} MB`);
-}
-
-export { generateCustomerData, generateBulkCustomerData, saveCustomerData };
+export { generateCustomerData, generateBulkCustomerData };

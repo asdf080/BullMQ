@@ -61,3 +61,4 @@ generated
 
 
 customer_data.json
+/src/generated/prisma
