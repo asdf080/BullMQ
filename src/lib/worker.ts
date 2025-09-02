@@ -1,5 +1,6 @@
 import { Worker } from "bullmq";
 import { encryptCustomerBatch } from "@/lib/encryption";
+import { prisma } from "./prisma";
 
 const QUEUE_NAME = process.env.QUEUE_NAME || "encrypt-queue";
 
@@ -24,7 +25,31 @@ const worker = new Worker(
       const successCount = encryptedCustomers.filter((c) => c.encrypted).length;
       const failCount = customers.length - successCount;
 
-      console.log(`✅ 배치 ${batchId} 완료: 성공 ${successCount}명, 실패 ${failCount}명`);
+      const customersIds = customers.map((c: any) => c.id);
+
+      // 암호화된 고객 데이터 DB에 업데이트
+      const res = await prisma.customer.updateMany({
+        where: { id: { in: customersIds } },
+        data: {
+          encrypted: true,
+          encryptedAt: new Date(),
+        },
+      });
+
+      if (res.count !== successCount) {
+        throw new Error(`DB 업데이트 실패: ${res.count}명 업데이트됨, ${successCount}명 예상됨`);
+      }
+
+      // Job 상태 업데이트
+      await prisma.encryptionJob.update({
+        where: { batchId: String(batchId) },
+        data: {
+          status: failCount === 0 ? "completed" : "failed",
+          processedCount: successCount,
+          errorMessage: failCount > 0 ? `${failCount}명 암호화 실패` : null,
+          completedAt: new Date(),
+        },
+      });
 
       return {
         success: true,

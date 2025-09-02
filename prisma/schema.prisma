@@ -12,7 +12,7 @@ datasource db {
 model Customer {
   id          String    @id @default(cuid())
   name        String
-  email       String    @unique
+  email       String   
   phone       String?
   ssnLast4    String?   @map("ssn_last4")
   address     String? 

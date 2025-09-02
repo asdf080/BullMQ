@@ -1,7 +1,5 @@
 import { Customer } from "@/generated/prisma";
 import { faker } from "@faker-js/faker";
-import fs from "fs";
-import path from "path";
 
 // 고객 데이터 인터페이스
 export type CustomerData = Omit<Customer, "createdAt" | "updatedAt" | "encryptedAt">;
