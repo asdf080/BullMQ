@@ -43,6 +43,15 @@ const worker = new Worker(
   { connection },
 );
 
+// Redis 연결 이벤트
+worker.on("ready", () => {
+  console.log("✅ Worker가 Redis에 연결되었습니다!");
+});
+
+worker.on("error", (error) => {
+  console.error("❌ Worker 에러:", error);
+});
+
 worker.on("completed", (job) => {
   console.log(`✅ Job 완료: ${job.id}`);
 });

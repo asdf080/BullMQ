@@ -58,3 +58,6 @@ next-env.d.ts
 
 # generated
 generated
+
+
+customer_data.json
