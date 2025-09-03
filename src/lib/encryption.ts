@@ -102,7 +102,7 @@ export function encryptCustomerData(customer: any): any {
 export function decryptCustomerData(encryptedCustomer: any): any {
   try {
     // 복호화할 필드들
-    const fieldsToDecrypt = ["name", "email", "phone", "ssn_last4", "address"];
+    const fieldsToDecrypt = ["name", "email", "phone", "ssnLast4", "address"];
 
     // 새 객체 생성
     const decryptedCustomer = { ...encryptedCustomer };
@@ -133,8 +133,6 @@ export function decryptCustomerData(encryptedCustomer: any): any {
  * @returns 암호화된 고객 배열
  */
 export async function encryptCustomerBatch(customers: any[]): Promise<any[]> {
-  console.log(`🔒 배치 암호화 시작: ${customers.length}명`);
-
   const encryptedCustomers = [];
   let successCount = 0;
   let failCount = 0;

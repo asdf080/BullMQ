@@ -28,7 +28,7 @@ model Customer {
 
 model EncryptionJob {
   id             Int      @id @default(autoincrement())
-  batchId        String   @unique @map("batch_id")
+  batchId        String   @map("batch_id")
   status         JobStatus
   processedCount Int      @default(0) @map("processed_count") // 처리된 고객 수
   errorMessage   String?  @map("error_message")

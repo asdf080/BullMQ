@@ -11,8 +11,6 @@ export async function POST() {
       const startIdx = i * 100;
       const endIdx = Math.min((i + 1) * 100, customerData.length);
       const customerBatch = customerData.slice(startIdx, endIdx);
-      // for (let i = 0; i < 10; i++) {
-      //   const customerBatch = customerData.slice(1, 10);
 
       await encryptQueue.add("encrypt-batch", {
         batchId: i + 1,

@@ -1,3 +1,5 @@
+import EncryptPage from "@/components/encrypt-page";
+
 export default function Home() {
-  return <div></div>;
+  return <EncryptPage />;
 }
